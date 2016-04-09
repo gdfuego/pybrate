@@ -3,18 +3,18 @@
 from sense_hat import SenseHat
 from time import sleep, ctime
 
-sense = SenseHat()
+SENSOR = SenseHat()
 
-last = sense.get_accelerometer_raw()
+LAST = SENSOR.get_accelerometer_raw()
 
 while True:
-        current = sense.get_accelerometer_raw()
-    X = abs(last['x'] - current['x'])
-    Y = abs(last['y'] - current['y'])
-    Z = abs(last['z'] - current['z'])
+    CURRENT = SENSOR.get_accelerometer_raw()
+    X = abs(LAST['x'] - CURRENT['x'])
+    Y = abs(LAST['y'] - CURRENT['y'])
+    Z = abs(LAST['z'] - CURRENT['z'])
 
     if (X > 0.05) or (Y > 0.05) or (Z > 0.05):
-                print("%s - Moving" % ctime())
+        print "%s - Moving" % ctime()
 
-    last = current
+    LAST = CURRENT
     sleep(2)
