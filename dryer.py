@@ -13,20 +13,29 @@ class Dryer(VibrateSensor):
         self.movement_ended = datetime(2000, 1, 1)
 
     def update(self):
-        """Update object states"""
-        motion = self.motion_detected()
-        if motion:
-            if not self.running:
-                running_time = datetime.now() - self.movement_started
-                if running_time.seconds > 60:
-                    self.running = True
-            else:
-                self.movement_ended = datetime.now()
-        else:
-            if self.running:
-                stopped_time = datetime.now() - self.movement_ended
-                if stopped_time.seconds > 60:
+        """Attempts to detect motion by running up to 5 polling events.
+        A single motion event out of 5 will count as motion.
+        Returns True when the status changed, or False if it remains the same"""
+        changed = False
+        for _ in range(5):
+            if self.motion_detected():
+                print "motion"
+                if not self.running:
+                    running_time = datetime.now() - self.movement_started
+                    if running_time.seconds > 60:
+                        self.running = True
+                        changed = True
+                else:
                     self.movement_ended = datetime.now()
-                    self.running = False
+                break
             else:
-                self.movement_started = datetime.now()
+                print "no motion"
+                if self.running:
+                    stopped_time = datetime.now() - self.movement_ended
+                    if stopped_time.seconds > 60:
+                        self.movement_ended = datetime.now()
+                        self.running = False
+                        changed = True
+                else:
+                    self.movement_started = datetime.now()
+        return changed
