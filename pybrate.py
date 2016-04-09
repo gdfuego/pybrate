@@ -15,7 +15,7 @@ class VibrateSensor(object):
         self.last_reading = self.current_reading
         self.current_reading = self.sensor.get_accelerometer_raw()
 
-    def moving(self):
+    def motion_detected(self):
         """Returns True if there has been movement since the last read"""
         self.read_sensor()
         x_movement = abs(self.last_reading['x'] - self.current_reading['x'])
