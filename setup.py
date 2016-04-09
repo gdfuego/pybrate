@@ -6,6 +6,6 @@ setup(name='pybrate',
       author='Gregory Boyce',
       author_email='gregory.boyce@gmail.com',
       url='https://github.com/gdfuego/pybrate',
-      py_modules = ['pybrate'],
-      scripts=['dryer']
+      py_modules = ['pybrate', 'dryer'],
+      scripts=['track_dryer']
       )
