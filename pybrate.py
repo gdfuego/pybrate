@@ -1,20 +1,30 @@
 #!/usr/bin/python
 
-from sense_hat import SenseHat
-from time import sleep, ctime
+class VibrateSensor(object):
+    """Vibration Sensor"""
 
-SENSOR = SenseHat()
+    def __init__(self):
+        from sense_hat import SenseHat
+        self.movement_threshold = 0.05
+        self.sensor = SenseHat()
+        self.current_reading = self.sensor.get_accelerometer_raw()
+        self.last_reading = self.current_reading
 
-LAST = SENSOR.get_accelerometer_raw()
+    def read_sensor(self):
+        """Set last_reading to prevous sensor reading, and read again"""
+        self.last_reading = self.current_reading
+        self.current_reading = self.sensor.get_accelerometer_raw()
 
-while True:
-    CURRENT = SENSOR.get_accelerometer_raw()
-    X = abs(LAST['x'] - CURRENT['x'])
-    Y = abs(LAST['y'] - CURRENT['y'])
-    Z = abs(LAST['z'] - CURRENT['z'])
+    def moving(self):
+        """Returns True if there has been movement since the last read"""
+        self.read_sensor()
+        x_movement = abs(self.last_reading['x'] - self.current_reading['x'])
+        y_movement = abs(self.last_reading['y'] - self.current_reading['y'])
+        z_movement = abs(self.last_reading['z'] - self.current_reading['z'])
+        if (x_movement > self.movement_threshold) \
+                or (y_movement > self.movement_threshold) \
+                or (z_movement > self.movement_threshold):
+            return True
+        else:
+            return False
 
-    if (X > 0.05) or (Y > 0.05) or (Z > 0.05):
-        print "%s - Moving" % ctime()
-
-    LAST = CURRENT
-    sleep(2)
