@@ -19,7 +19,6 @@ class Dryer(VibrateSensor):
         changed = False
         for _ in range(5):
             if self.motion_detected():
-                print "motion"
                 if not self.running:
                     running_time = datetime.now() - self.movement_started
                     if running_time.seconds > 60:
@@ -29,7 +28,6 @@ class Dryer(VibrateSensor):
                     self.movement_ended = datetime.now()
                 break
             else:
-                print "no motion"
                 if self.running:
                     stopped_time = datetime.now() - self.movement_ended
                     if stopped_time.seconds > 60:
