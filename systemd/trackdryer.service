@@ -1,0 +1,10 @@
+[Unit]
+Description=Dryer Monitor
+
+[Service]
+EnvironmentFile=-/etc/default/track_dryer
+ExecStart=/usr/local/bin/track_dryer -k $IFTTT_KEY
+After=network.target
+
+[Install]
+WantedBy=multi-user.target

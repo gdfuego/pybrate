@@ -1,0 +1,2 @@
+# Add your IFTTT API key here and install as /etc/default/track_dryer
+IFTTT_KEY=XXX
