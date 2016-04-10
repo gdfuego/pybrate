@@ -1,0 +1,14 @@
+[Unit]
+Description=Dryer Monitor
+After=network.target auditd.service
+ConditionPathExists=/etc/default/track_dryer
+
+[Service]
+EnvironmentFile=-/etc/default/track_dryer
+ExecStart=/usr/local/bin/track_dryer -k $IFTTT_KEY
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+Alias=dryer.service

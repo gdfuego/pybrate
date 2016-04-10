@@ -14,8 +14,6 @@ apikey = args.key
 
 myDryer = Dryer()
 
-sending.send_event(apikey, "dryer_finished")
-
 while True:
     if myDryer.update():
         if myDryer.running:
