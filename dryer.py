@@ -9,8 +9,8 @@ class Dryer(VibrateSensor):
         super(Dryer, self).__init__()
         self.running = False
         self.refresh = False
-        self.movement_started = datetime(2000, 1, 1)
-        self.movement_ended = datetime(2000, 1, 1)
+        self.movement_started = datetime.now()
+        self.movement_ended = datetime.now()
 
     def update(self):
         """Attempts to detect motion by running up to 5 polling events.
@@ -26,14 +26,14 @@ class Dryer(VibrateSensor):
                         changed = True
                 else:
                     self.movement_ended = datetime.now()
-                break
-            else:
-                if self.running:
-                    stopped_time = datetime.now() - self.movement_ended
-                    if stopped_time.seconds > 60:
-                        self.movement_ended = datetime.now()
-                        self.running = False
-                        changed = True
-                else:
-                    self.movement_started = datetime.now()
+                return changed
+        # We returned no motion 5 times in a row
+        if self.running:
+            stopped_time = datetime.now() - self.movement_ended
+            if stopped_time.seconds > 60:
+                self.movement_ended = datetime.now()
+                self.running = False
+                changed = True
+        else:
+            self.movement_started = datetime.now()
         return changed
