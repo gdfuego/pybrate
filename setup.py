@@ -6,7 +6,7 @@ setup(name='pybrate',
       author='Gregory Boyce',
       author_email='gregory.boyce@gmail.com',
       url='https://github.com/gdfuego/pybrate',
-      py_modules = ['pybrate', 'dryer'],
+      py_modules = ['pybrate'],
       scripts=['track_dryer'],
       install_requires = [ 'pyfttt', 'sense_hat' ]
       )
