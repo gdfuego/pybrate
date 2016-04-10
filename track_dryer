@@ -17,6 +17,8 @@ myDryer = Dryer()
 while True:
     if myDryer.update():
         if myDryer.running:
+            sending.send_event(apikey, "dryer_started")
+        else:
             sending.send_event(apikey, "dryer_finished")
     sleep(5)
 
