@@ -5,6 +5,7 @@ Description=Dryer Monitor
 EnvironmentFile=-/etc/default/track_dryer
 ExecStart=/usr/local/bin/track_dryer -k $IFTTT_KEY
 After=network.target
+PIDFile=/run/dryer.pid
 
 [Install]
 WantedBy=multi-user.target
