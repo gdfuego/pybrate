@@ -24,8 +24,8 @@ if os.path.isfile(pidfile):
     sys.exit()
 file(pidfile, 'w').write(pid)
 try:
-    while True:
-        if myDryer.update():
+    while myDryer.update():
+        if myDryer.changed:
             if myDryer.running:
                 sending.send_event(apikey, "dryer_started")
             else:
