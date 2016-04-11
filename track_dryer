@@ -7,6 +7,13 @@ import os, sys
 
 import argparse
 
+def write_pid(pidfile):
+    pid = str(os.getpid())
+    if os.path.isfile(pidfile):
+        print "%s already exists, exiting" % pidfile
+        sys.exit()
+    file(pidfile, 'w').write(pid)
+
 def main():
     parser = argparse.ArgumentParser(description='Send dryer notifications')
     parser.add_argument('--key', '-k', default=False, required=True,
@@ -18,12 +25,8 @@ def main():
 
     myDryer = Dryer()
 
-    pid = str(os.getpid())
-    pidfile = args.pid
-    if os.path.isfile(pidfile):
-        print "%s already exists, exiting" % pidfile
-        sys.exit()
-    file(pidfile, 'w').write(pid)
+    write_pid(args.pid)
+
     try:
         while myDryer.update():
             if myDryer.changed:
@@ -34,7 +37,7 @@ def main():
             sleep(5)
 
     finally:
-        os.unlink(pidfile)
+        os.unlink(args.pid)
 
 
 if __name__ == '__main__':
